@@ -15,44 +15,52 @@ python main.py
 ```
 This file is craeted by Rakesh on github
 This line is on neurolab
-Git commands
 
-If you are starting a project and you want to use git in your project
+## Git commands
 
+## starting a project and use git
+'''
 git init
+'''
 Note: This is going to initalize git in your source code.
 
-OR
-
-You can clone exiting github repo
-
+## You can clone exiting github repo
+'''
 git clone <github_url>
+'''
 Note: Clone/ Downlaod github repo in your system
 
-Add your changes made in file to git stagging are
-
+## Add your changes made in file to git stagging are
+'''
 git add file_name
+git add .
+'''
 Note: You can given file_name to add specific file or use "." to add everything to staging are
 
-Create commits
-
+## Create commits
+'''
 git commit -m "message"
 git push origin main
+'''
 Note: origin--> contains url to your github repo main--> is your branch name
 
-To push your changes forcefully.
-
+## To push your changes forcefully.
+'''
 git push origin main -f
-To pull changes from github repo
-
+'''
+## To pull changes from github repo
+'''
 git pull origin main
-Note: origin--> contains url to your github repo main--> is your branch name
+'''
+origin--> contains url to your github repo 
+main--> is your branch name
 
-.env file has
+### .env file has
 
 MONGO_DB_URL="mongodb://localhost:27017"
 AWS_ACCESS_KEY_ID="aagswdiquyawvdiu"
 AWS_SECRET_ACCESS_KEY="sadoiuabnswodihabosdbn"
+
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 sudo usermod -aG docker ubuntu
