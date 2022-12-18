@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
-
+@dataclass 
+# decorator - additional functionalities same as __init__
 class DataIngestionArtifact:
     feature_store_file_path:str
     train_file_path:str
