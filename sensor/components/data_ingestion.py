@@ -24,8 +24,8 @@ class DataIngestion:
                 database_name=self.data_ingestion_config.database_name,
                 collection_name=self.data_ingestion_config.collection_name)
             
-            logging.info("save data in feature store")
-            # save data in feature store 
+            logging.info("replace na with NAN ")
+            # replace na with NAN 
             df.replace(to_replace='na',value=na.NAN, inplace=True)
             
             logging.info('create feature store folder')
@@ -46,8 +46,8 @@ class DataIngestion:
             dataset_dir=os.path.dirname(self.data_ingestion_config.train_file_path)
             os.makedirs(dataset_dir,exist_ok=True)
 
-            logging.info('save df to feature stotre folder')
-            #save df to feature stotre folder
+            logging.info('save df to feature store folder')
+            #save df to feature store folder
             train_df.to_csv(path_or_buf=self.data_ingestion_config.feature_store_file_path,index=False)
             test_df.to_csv(path_or_buf=self.data_ingestion_config.feature_store_file_path,index=False)
 
@@ -57,7 +57,7 @@ class DataIngestion:
                 train_file_path=self.data_ingestion_config.train_file_path,
                 test_file_path=self.data_ingestion_config.test_file_path)
             
-            logging.info("Data ingestion Component")
+            logging.info(f"Data ingestion artifact:{data_ingestion_artifact}")
             return data_ingestion_artifact
 
 
