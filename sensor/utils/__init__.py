@@ -3,6 +3,7 @@ from sensor.logger import logging
 from sensor.exception import SensorException
 from sensor.config import mongo_client
 import os, sys
+
 def get_connection_as_dataframe(database_name:str,collection_name:str)->pd.DataFrame:
     ''' Description : This function returns collection as dataframe
     ===============================================================
@@ -16,6 +17,7 @@ def get_connection_as_dataframe(database_name:str,collection_name:str)->pd.DataF
         logging.info(f"Reading data from database:{database} and collection: {collection_name} ")
         df=pd.DataFrame(list(mongo_client[database_name][collection_name].find()))
         logging.info(f"Found column:{df.columns} ")
+        # useless formed '_id' column in all Mongo db
         if "_id" in df.columns:
             logging.info(f"Dropping column: _id")
             df = df.drop('_id',axis=1)
