@@ -21,7 +21,7 @@ class DataIngestion:
         try:
             logging.info(f"Exporting collection data as pandas dataframe")
             #Exporting collection data as pandas dataframe
-            df:pd.DataFrame  = utils.get_collection_as_dataframe(
+            df:pd.DataFrame  = utils.get_connection_as_dataframe(
                 database_name=self.data_ingestion_config.database_name, 
                 collection_name=self.data_ingestion_config.collection_name)
 
@@ -43,7 +43,7 @@ class DataIngestion:
 
             logging.info("split dataset into train and test set")
             #split dataset into train and test set
-            train_df,test_df = train_test_split(df,test_size=self.data_ingestion_config.test_size,random_state=42)
+            train_df,test_df = train_test_split(df,test_size=self.data_ingestion_config.test_size,train_size=0.8,random_state=42)
             
             logging.info("create dataset directory folder if not available")
             #create dataset directory folder if not available
