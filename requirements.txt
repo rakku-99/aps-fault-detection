@@ -1,4 +1,5 @@
 pymongo==4.2.0
+numba
 python-dotenv==0.21.0
 dill==0.3.5.1
 dnspython==2.2.1

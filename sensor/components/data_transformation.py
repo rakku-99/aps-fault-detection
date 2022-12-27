@@ -6,8 +6,7 @@ import os,sys
 import pandas as pd
 from sensor import utils
 import numpy as np
-
-from sklearn.preprocessing import Pipeline
+from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import RobustScaler
 from sensor.config import TARGET_COLUMN
@@ -18,7 +17,8 @@ class DataTransformation:
     def __init__(self,data_transformation_config:config_entity.DataTransformationConfig,
                         data_ingestion_artifact:artifact_entity.DataIngestionArtifact):
         try:
-            self.data_transormation_config= data_transormation_config
+            logging.info(f"{'>>'*20} 3. Data Transformation {'<<'*20}")
+            self.data_transformation_config= data_transformation_config
             self.data_ingestion_artifact=data_ingestion_artifact
         except Exception as e:
             raise SensorException(e, sys)
@@ -37,7 +37,7 @@ class DataTransformation:
         except Exception as e:
             raise SensorException(e, sys)
 
-    def initiate_data_transformation(self,)->artifact_entity.DataTransformation:
+    def initiate_data_transformation(self,)->artifact_entity.DataTransformationArtifact:
         try:
             #reading train & test files
             train_df=pd.read_csv(self.data_ingestion_artifact.train_file_path)
@@ -51,43 +51,47 @@ class DataTransformation:
             target_feature_test_df  = test_df[TARGET_COLUMN]
 
             # convert pos neg categorical into numerical - 
-            label_encoder=LabelEncoder()
+            label_encoder= LabelEncoder()
             label_encoder.fit(target_feature_train_df)
 
+            # transformation on target feature
             target_feature_train_arr = label_encoder.transform(target_feature_train_df)
             target_feature_test_arr = label_encoder.transform(target_feature_test_df)
 
             transformation_pipeline = DataTransformation.get_data_transformer_object()
             transformation_pipeline.fit(input_feature_train_df)
-            input_feature_train_arr = transformation_pipeline.transform(input_feature_test_df)
+
+            # transformation on input feature
+            input_feature_train_arr = transformation_pipeline.transform(input_feature_train_df)
             input_feature_test_arr = transformation_pipeline.transform(input_feature_test_df)
 
             # Handle imbalance - pos=1000, neg=35188
-            smt = SMOTETomek(sampling_strategy="minority")
-            logging.info(f"Before resampling in training set Input: {input_feature_train_arr}, Traget :{target_feature_train_arr} ")
+            #smt = SMOTETomek(random_state=42)
+            smt = SMOTETomek(sampling_strategy="not majority")
+            logging.info(f"Before resampling in training set Input: {input_feature_train_arr.shape}, Traget :{target_feature_train_arr.shape} ")
             input_feature_train_arr,target_feature_train_arr = smt.fit_resample(input_feature_train_arr,target_feature_train_arr)
-            logging.info(f"After resampling in training set Input: {input_feature_train_arr}, Traget :{target_feature_train_arr} ")
+            logging.info(f"After resampling in training set Input: {input_feature_train_arr.shape}, Traget :{target_feature_train_arr.shape} ")
 
-            logging.info(f"Before resampling in training set Input: {input_feature_test_arr}, Traget :{target_feature_test_arr} ")
+            logging.info(f"Before resampling in training set Input: {input_feature_test_arr.shape}, Traget :{target_feature_test_arr.shape} ")
             input_feature_test_arr ,target_feature_test_arr  = smt.fit_resample(input_feature_test_arr,target_feature_test_arr)
-            logging.info(f"After resampling in training set Input: {input_feature_test_arr}, Traget :{target_feature_test_arr} ")
+            logging.info(f"After resampling in training set Input: {input_feature_test_arr.shape}, Traget :{target_feature_test_arr.shape} ")
 
             # target Encoder
             train_arr=np.c_[input_feature_train_arr,target_feature_train_arr]
             test_arr =np.c_[input_feature_test_arr ,target_feature_test_arr] 
 
-            # save numpy array
+            logging.info("save numpy array")
             # 1:10 4-Dec-22
-            utils.save_numpy_array_data(file_path=self.data_transormation_config.transformed_train_path, 
+            utils.save_numpy_array_data(file_path=self.data_transformation_config.transformed_train_path, 
                     array=train_arr)
 
-            utils.save_numpy_array_data(file_path=self.data_transormation_config.transformed_test_path, 
+            utils.save_numpy_array_data(file_path=self.data_transformation_config.transformed_test_path, 
                     array=test_arr)
 
-            utils.save_object(file_path=self.data_transormation_config.transform_object_path, 
-                    obj=transformation_pipleine)
+            utils.save_object(file_path=self.data_transformation_config.transform_object_path, 
+                    obj=transformation_pipeline)
 
-            utils.save_object(file_path=self.data_transormation_config.target_encoder_path, 
+            utils.save_object(file_path=self.data_transformation_config.target_encoder_path, 
                     obj=label_encoder)
 
             data_transformation_artifact = artifact_entity.DataTransformationArtifact(
