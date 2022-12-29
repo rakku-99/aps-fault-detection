@@ -17,10 +17,10 @@ class ModelEvaluation:
                 model_trainer_artifact:artifact_entity.ModelTrainerArtifact):
         try:
             logging.info(f"{'>>'*20} 5. Model Evaluation {'<<'*20}")
-            self.model_eval_config:config.entity.ModelEvaluationConfig
-            self.data_ingestion_artifact:artifact_entity.DataIngestionArtifact
-            self.data_transformation_artifact:artifact_entity.DataTransformationArtifact
-            self.model_trainer_artifact:artifact_entity.ModelTrainerArtifact
+            self.model_eval_config=model_eval_config
+            self.data_ingestion_artifact=data_ingestion_artifact
+            self.data_transformation_artifact=data_transformation_artifact
+            self.model_trainer_artifact=model_trainer_artifact
             self.model_resolver=ModelResolver()
             
         except Exception as e:
@@ -51,7 +51,7 @@ class ModelEvaluation:
             logging.info("Loading previously trained objects transformer, model & target encoder")
             transformer = load_object(file_path=transformer_path )
             model = load_object(file_path=model_path)
-            target = load_object(file_path=target_encoder_path )
+            target_encoder = load_object(file_path=target_encoder_path )
 
             #currently trained model objects
             logging.info("currently trained model objects")
@@ -60,24 +60,24 @@ class ModelEvaluation:
             current_target_encoder= load_object(file_path= self.data_transformation_artifact.target_encoder_path)
 
             # comparision these models f1 
-            logging.info("comparision these models f1")
+            logging.info("comparision between these models")
             test_df = pd.read_csv(self.data_ingestion_artifact.test_file_path)
             target_df = test_df[TARGET_COLUMN]
-            y_true = target_encoder.transfom(target_df) 
+            y_true = target_encoder.transform(target_df) 
 
             # Accuracy using Previously trained model 
-            input_feature_name = list(transformer.features_names_in )
-            input_arr = transformer.transfom(test_df[input_feature_name])
+            input_feature_name = list(transformer.feature_names_in_ )
+            input_arr = transformer.transform(test_df[input_feature_name])
             y_pred = model.predict(input_arr)
-            print(f" Prediction using previous model : {target_encoder.inverse_transform(prediction[:5])}")
+            print(f" Prediction using previous model : {target_encoder.inverse_transform(y_pred[:5])}")
             previous_model_score = f1_score(y_true= y_true, y_pred= y_pred )
             logging.info(f"previous_model_score: {previous_model_score}")
 
             # Accuracy using Current trained model 
-            input_feature_name = list(current_transformer.features_names_in )
-            input_arr = current_transformer.transfom(test_df[input_feature_name])
+            input_feature_name = list(current_transformer.feature_names_in_ )
+            input_arr = current_transformer.transform(test_df[input_feature_name])
             y_pred = current_model.predict(input_arr)
-            print(f" Prediction using current model : {current_target_encoder.inverse_transform(prediction[:5])}")
+            print(f" Prediction using current model : {current_target_encoder.inverse_transform(y_pred[:5])}")
             current_model_score = f1_score(y_true= y_true, y_pred= y_pred )
             logging.info(f"current_model_score: {current_model_score}")
             
@@ -88,7 +88,7 @@ class ModelEvaluation:
             model_eval_artifact = artifact_entity.ModelEvaluationArtifact(is_model_accepted=True, 
                     improve_accuracy= (current_model_score - previous_model_score) )
             
-            logging.info(f"Model Eval artifact: {model_eval_artifact} having improve_accuracy by: {improve_accuracy}")
+            logging.info(f"Model Eval artifact: {model_eval_artifact} having improve_accuracy by: {current_model_score - previous_model_score}")
             return model_eval_artifact
             
         except Exception as e:

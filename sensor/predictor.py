@@ -8,7 +8,7 @@ from typing import Optional
 class ModelResolver:
         
     def __init__(self, model_registry:str="saved_models",
-                    transformer_dir_name:str="transfomer",
+                    transformer_dir_name:str="transformer",
                     target_encoder_dir_name:str="target_encoder",
                     model_dir_name:str="model"):
         self.model_registry=model_registry
@@ -22,12 +22,12 @@ class ModelResolver:
             dir_names = os.listdir(self.model_registry)
             if len(dir_names) == 0:
                 return None
-            print(type(dir_names))
-            #dir_names = list(map(int, dir_names))
-            dir_names = list(dir_names)
+            #print(type(dir_names))
+            dir_names = list(map(int, dir_names))
+            #dir_names = list(dir_names)
             latest_dir_name = max(dir_names)
             return os.path.join(self.model_registry,
-                f"{latest_dir_name} ")
+                f"{latest_dir_name}")
         except Exception as e:
             raise SensorException(e, sys)
 
@@ -65,10 +65,10 @@ class ModelResolver:
         try:
             latest_dir = self.get_latest_dir_path()
             if latest_dir==None:
-                return os.path.join(self.model_registry,f"{0} ") 
+                return os.path.join(self.model_registry,f"{0}") 
             latest_dir_num = int(os.path.basename(self.get_latest_dir_path()))           
             ### check
-            return os.path.join(self.model_registry,f"{latest_dir_num+1} ")
+            return os.path.join(self.model_registry,f"{latest_dir_num+1}")
         except Exception as e:
             raise SensorException(e, sys)
 

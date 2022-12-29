@@ -25,8 +25,8 @@ def start_batch_prediction(input_file_path):
         logging.info(f"Loading transformer to transform dataset")
         transformer = load_object(file_path=model_resolver.get_latest_transformer_path())
 
-        input_feature_names = list(transformer.features_names_in )
-        input_arr = transformer.transfom(df[input_feature_names])
+        input_feature_names = list(transformer.feature_names_in_ )
+        input_arr = transformer.transform(df[input_feature_names])
         
         logging.info(f"Loading model to make prediction")
         model = load_object(file_path=model_resolver.get_latest_model_path())
