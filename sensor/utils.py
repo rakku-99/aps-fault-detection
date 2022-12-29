@@ -38,7 +38,7 @@ def write_yaml_file(file_path,data:dict):
         os.makedirs(file_dir,exist_ok=True)
         with open(file_path,"w") as file_writer:
             yaml.dump(data, file_writer)
-            
+        logging.info("Executed the write_yaml_file method of utils")
     except Exception as e:
         raise SensorException(e, sys)
         
@@ -47,6 +47,7 @@ def convert_columns_float(df,exclude_columns:list)->pd.DataFrame:
         for column in df.columns:
             if column not in exclude_columns:
                 df[column]=df[column].astype('float')
+        logging.info("Executed the convert_columns_float method of utils")
         return df
     except Exception as e:
         raise e
@@ -57,16 +58,18 @@ def save_object(file_path: str, obj: object) -> None:
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         with open(file_path, "wb") as file_obj:
             dill.dump(obj, file_obj)
-        logging.info("Exited the save_object method of utils")
+        logging.info("Executed the save_object method of utils")
     except Exception as e:
         raise SensorException(e, sys) from e
 
 def load_object(file_path: str, ) -> object:
     try:
+        logging.info("Entered the load_object method of utils")
         if not os.path.exists(file_path):
-            raise Exception(f"The file: {file_path} is not exists")
+            raise Exception(f"The file: {file_path} does not exist")
         with open(file_path, "rb") as file_obj:
             return dill.load(file_obj)
+        logging.info("Executed the load_object method of utils")
     except Exception as e:
         raise SensorException(e, sys) from e
         
@@ -77,10 +80,12 @@ def save_numpy_array_data(file_path: str, array: np.array):
     array: np.array data to save
     """
     try:
+        logging.info("Entered the save_numpy_array_data method of utils")
         dir_path = os.path.dirname(file_path)
         os.makedirs(dir_path, exist_ok=True)
         with open(file_path, "wb") as file_obj:
             np.save(file_obj, array)
+        logging.info("Executed the save_numpy_array_data method of utils")
     except Exception as e:
         raise SensorException(e, sys) from e
 
@@ -91,7 +96,9 @@ def load_numpy_array_data(file_path: str) -> np.array:
     return: np.array data loaded
     """
     try:
+        logging.info("Entered the load_numpy_array_data method of utils")
         with open(file_path, "rb") as file_obj:
             return np.load(file_obj)
+        logging.info("Executed the load_numpy_array_data method of utils")
     except Exception as e:
         raise SensorException(e, sys) from e

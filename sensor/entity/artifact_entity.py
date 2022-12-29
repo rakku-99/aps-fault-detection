@@ -31,4 +31,6 @@ class ModelEvaluationArtifact:
 
 
 @dataclass 
-class ModelPusherArtifact:...
+class ModelPusherArtifact:
+    pusher_model_dir:str
+    saved_models_dir:str
