@@ -64,12 +64,16 @@ AWS_SECRET_ACCESS_KEY="sadoiuabnswodihabosdbn"
 ```
 
 ```
+<<<<<<< HEAD
 clear
+=======
+>>>>>>> f566c904c29e4b01d2cf4e1591ed2b58512b6d48
 curl -fsSL https://get.docker.com -o get-docker.sh
 ls
 sudo sh get-docker.sh
 sudo usermod -aG docker ubuntu
 newgrp docker
+```
 
 docker --version
 docker images
