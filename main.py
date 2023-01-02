@@ -17,6 +17,12 @@ if __name__=="__main__":
      except Exception as e:
           print(e)
 
+'''' 
+1. setup mongoDBURL - enter in search bar
+2. tets code local
+3. record data in Dockerfile'''
+
+
 '''
 1. import pymongo
 
