@@ -1,5 +1,5 @@
 version: "2"
-serices: 
+services: 
   application:
   image: ${IMAGE_NAME}
   container_name: sensor
