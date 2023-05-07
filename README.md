@@ -4,15 +4,15 @@
 
 ### Problem Satatement 
 
-APS Failure Detection in Scania Trucks
+**APS Failure Detection in Scania Trucks**
 Scania Trucks, one of the largest truck producing company provided the data related to APS(air pressure system), one of the part in trucks. Among all different parts in truck, company especially want to know if the failure is related with APS or not. Basically the motive is to reduce the extra effort and time for unnecessary check of APS.
 
-Machine learning problem
+**Machine learning problem**:- 
 It is given that there is a failure in Truck, the task is to find weather the failure is related to APS or not. Simply in terms of Machine Learning it is a Binary Classification problem where there is only two possibilities:-
 
-1. Failure related with APS.
+**1. Failure related with APS.
 
-2. Failure does not related with APS.
+**2. Failure does not related with APS**.
 
 ### Step 1 - Install the requirements
 
