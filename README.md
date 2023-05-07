@@ -10,7 +10,7 @@ Scania Trucks, one of the largest truck producing company provided the data rela
 **Machine learning problem**:- 
 It is given that there is a failure in Truck, the task is to find weather the failure is related to APS or not. Simply in terms of Machine Learning it is a Binary Classification problem where there is only two possibilities:-
 
-**1. Failure related with APS.
+**1. Failure related with APS.**
 
 **2. Failure does not related with APS**.
 
