@@ -1,6 +1,6 @@
-# neurolab-mongo-python
+#  ML Project - APS Failure Detection in Scania Trucks
 
-![image](https://user-images.githubusercontent.com/57321948/196933065-4b16c235-f3b9-4391-9cfe-4affcec87c35.png)
+![image](https://user-images.githubusercontent.com/108047278/236658869-bcf163cb-a699-4d56-a0dc-a402bed7b1bd.png)
 
 ### Problem Satatement 
 
@@ -92,9 +92,15 @@ docker ps
 ```
 
 AWS_ACCESS_KEY_ID=
+
 AWS_SECRET_ACCESS_KEY=
+
 AWS_REGION=
+
 AWS_ECR_LOGIN_URI=
+
 ECR_REPOSITORY_NAME=
+
 BUCKET_NAME=
+
 MONGO_DB_URL=
